@@ -12,7 +12,10 @@ describe("HeroSection", () => {
       screen.getByRole("heading", { name: SITE_CONFIG.headline, level: 1 })
     ).toBeInTheDocument();
 
-    const cta = screen.getByRole("link", { name: SITE_CONFIG.primaryCtaLabel });
-    expect(cta).toHaveAttribute("href", SITE_CONFIG.primaryCtaHref);
+    const ctas = screen.getAllByRole("link", { name: SITE_CONFIG.primaryCtaLabel });
+    expect(ctas.length).toBeGreaterThan(0);
+    ctas.forEach((cta) => {
+      expect(cta).toHaveAttribute("href", SITE_CONFIG.primaryCtaHref);
+    });
   });
 });

@@ -215,6 +215,8 @@ a:hover {
   opacity: 0;
   cursor: ew-resize;
   appearance: none;
+  touch-action: pan-y;
+  user-select: none;
 }
 
 .compare-range::-webkit-slider-runnable-track {
