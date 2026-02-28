@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 768 768" role="img" aria-labelledby="title desc">
+  <title id="title">Assistant cube mark</title>
+  <desc id="desc">Black square with light cube mark.</desc>
+  <rect width="768" height="768" rx="6" fill="#090603"/>
+  <g fill="#d6d4d4">
+    <path d="M384 112c8 0 16 2 24 7l220 133c14 9 23 24 23 40v184c0 16-9 32-23 40L408 649c-16 10-36 10-52 0L136 516c-14-8-23-24-23-40V292c0-16 9-31 23-40L356 119c8-5 18-7 28-7z"/>
+  </g>
+  <path fill="#090603" d="M166 252h436c8 0 13 9 9 16L389 631c-3 5-11 3-11-3V390c0-5-3-10-8-13L171 268c-7-4-4-16 5-16z"/>
+</svg>

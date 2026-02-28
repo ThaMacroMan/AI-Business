@@ -1,0 +1,29 @@
+<svg width="768" height="768" viewBox="0 0 768 768" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="geminiFill" x1="114" y1="384" x2="654" y2="384" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFC62A"/>
+      <stop offset="0.18" stop-color="#FF5252"/>
+      <stop offset="0.5" stop-color="#2D8CFF"/>
+      <stop offset="0.82" stop-color="#2ECC71"/>
+      <stop offset="1" stop-color="#23C6FF"/>
+    </linearGradient>
+    <radialGradient id="geminiGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(384 384) rotate(90) scale(330)">
+      <stop offset="0" stop-color="#6BA5FF" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#6BA5FF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softBlur" x="0" y="0" width="768" height="768" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="34"/>
+    </filter>
+  </defs>
+
+  <rect width="768" height="768" fill="transparent"/>
+  <circle cx="384" cy="384" r="300" fill="url(#geminiGlow)" filter="url(#softBlur)"/>
+  <path
+    d="M384 96
+       C417 246 522 351 672 384
+       C522 417 417 522 384 672
+       C351 522 246 417 96 384
+       C246 351 351 246 384 96Z"
+    fill="url(#geminiFill)"
+  />
+</svg>
