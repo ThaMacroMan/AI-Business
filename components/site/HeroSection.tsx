@@ -15,7 +15,7 @@ export function HeroSection() {
           <p className="mt-7 max-w-xl text-lg leading-8 text-[color:var(--muted)] sm:text-xl">
             {SITE_CONFIG.subheadline}
           </p>
-          <div className="mt-10 flex flex-wrap items-center gap-3">
+          <div className="mt-10 hidden flex-wrap items-center gap-3 sm:flex">
             <a
               href={SITE_CONFIG.primaryCtaHref}
               className="cta-primary focus-ring w-full sm:w-auto"
@@ -40,6 +40,23 @@ export function HeroSection() {
             beforeAlt="Overwhelmed office worker buried in paperwork before AI help"
             afterAlt="Calm office worker with automated AI workflow after implementation"
           />
+
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:hidden">
+            <a
+              href={SITE_CONFIG.primaryCtaHref}
+              className="cta-primary focus-ring inline-flex w-full justify-center px-3 text-sm"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {SITE_CONFIG.primaryCtaLabel}
+            </a>
+            <Link
+              href={SITE_CONFIG.secondaryCtaHref}
+              className="cta-secondary focus-ring inline-flex w-full justify-center px-3 text-sm"
+            >
+              {SITE_CONFIG.secondaryCtaLabel}
+            </Link>
+          </div>
         </div>
       </div>
     </section>
