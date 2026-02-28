@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Post AI placeholder</title>
+  <desc id="desc">Placeholder image for post AI comparison side.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0c5f84" />
+      <stop offset="100%" stop-color="#072e45" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg)" />
+  <g fill="none" stroke="rgba(255,255,255,0.36)">
+    <rect x="145" y="145" width="910" height="610" rx="26" />
+    <path d="M205 662 L408 456 L545 561 L768 328 L998 542" stroke-width="7" stroke-linecap="round" />
+  </g>
+  <g fill="white" font-family="Arial, sans-serif" text-anchor="middle">
+    <text x="600" y="390" font-size="58" font-weight="700">Add Post-AI Image</text>
+    <text x="600" y="448" font-size="32" opacity="0.9">Replace /public/images/post-ai-placeholder.svg</text>
+    <text x="600" y="492" font-size="32" opacity="0.9">with your final after image</text>
+  </g>
+</svg>

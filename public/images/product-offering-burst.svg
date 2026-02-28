@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" role="img" aria-labelledby="title desc">
+  <title id="title">Product offering burst icon</title>
+  <desc id="desc">Orange starburst icon.</desc>
+  <g fill="none" stroke="#d97b58" stroke-width="45" stroke-linecap="round" transform="translate(320 320)">
+    <line x1="0" y1="0" x2="280" y2="0" />
+    <line x1="0" y1="0" x2="243" y2="140" />
+    <line x1="0" y1="0" x2="140" y2="243" />
+    <line x1="0" y1="0" x2="0" y2="280" />
+    <line x1="0" y1="0" x2="-140" y2="243" />
+    <line x1="0" y1="0" x2="-243" y2="140" />
+    <line x1="0" y1="0" x2="-280" y2="0" />
+    <line x1="0" y1="0" x2="-243" y2="-140" />
+    <line x1="0" y1="0" x2="-140" y2="-243" />
+    <line x1="0" y1="0" x2="0" y2="-280" />
+    <line x1="0" y1="0" x2="140" y2="-243" />
+    <line x1="0" y1="0" x2="243" y2="-140" />
+  </g>
+</svg>
