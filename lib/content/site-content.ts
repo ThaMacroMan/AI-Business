@@ -51,6 +51,8 @@ export type FaqItem = {
 export type ContactConfig = {
   calendlyUrl: string;
   formspreeEndpoint: string;
+  formspreeFormId: string;
+  speedToLeadWebhook: string;
   contactEmail: string;
   contactPhone: string;
 };
@@ -71,10 +73,18 @@ const FORMSPREE_ENDPOINT =
   process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT ??
   "https://formspree.io/f/your-form-id";
 
+const FORMSPREE_FORM_ID =
+  process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID ??
+  extractFormspreeFormId(FORMSPREE_ENDPOINT);
+
+const SPEED_TO_LEAD_WEBHOOK =
+  process.env.NEXT_PUBLIC_SPEED_TO_LEAD_WEBHOOK ?? "";
+
 const CONTACT_EMAIL =
   process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "hello@prairiebusinessai.ca";
 
-const CONTACT_PHONE = process.env.NEXT_PUBLIC_CONTACT_PHONE ?? "+1 (306) 000-0000";
+const CONTACT_PHONE =
+  process.env.NEXT_PUBLIC_CONTACT_PHONE ?? "+1 (306) 000-0000";
 
 export const SITE_CONFIG: SiteConfig = {
   brandName: "Prarie AI",
@@ -94,8 +104,7 @@ export const SERVICES: ServiceItem[] = [
     id: "assistants",
     title: "AI Assistant Setup",
     outcome: "Get a reliable AI assistant running in your business.",
-    summary:
-      "Get your own AI Assistant setup, working on your behalf 24/7",
+    summary: "Get your own AI Assistant setup, working on your behalf 24/7",
     deliverables: [
       "Uses its own computer and integrates with your tools",
       "Autonomously performs tasks and learns from your feedback",
@@ -123,7 +132,8 @@ export const SERVICES: ServiceItem[] = [
   {
     id: "coaching",
     title: "AI Coaching & 1:1 Training",
-    outcome: "Build in-house confidence so your team can execute independently.",
+    outcome:
+      "Build in-house confidence so your team can execute independently.",
     summary:
       "Hands-on coaching for business owners and teams focused on practical use cases, tool selection, and implementation habits.",
     deliverables: [
@@ -246,6 +256,8 @@ export const FAQ_ITEMS: FaqItem[] = [
 export const CONTACT_CONFIG: ContactConfig = {
   calendlyUrl: CALENDLY_URL,
   formspreeEndpoint: FORMSPREE_ENDPOINT,
+  formspreeFormId: FORMSPREE_FORM_ID,
+  speedToLeadWebhook: SPEED_TO_LEAD_WEBHOOK,
   contactEmail: CONTACT_EMAIL,
   contactPhone: CONTACT_PHONE,
 };
@@ -302,4 +314,10 @@ export const AI_TOOL_ITEMS: AiToolItem[] = [
   },
 ];
 
-export const IS_FORMSPREE_PLACEHOLDER = FORMSPREE_ENDPOINT.includes("your-form-id");
+export const IS_FORMSPREE_PLACEHOLDER =
+  FORMSPREE_ENDPOINT.includes("your-form-id");
+
+function extractFormspreeFormId(endpoint: string): string {
+  const match = endpoint.match(/\/f\/([a-zA-Z0-9]+)$/);
+  return match?.[1] ?? "";
+}

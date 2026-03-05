@@ -2,9 +2,18 @@
 
 import { FormEvent, useMemo, useRef, useState } from "react";
 
-import { CONTACT_CONFIG, IS_FORMSPREE_PLACEHOLDER } from "@/lib/content/site-content";
+import {
+  CONTACT_CONFIG,
+  IS_FORMSPREE_PLACEHOLDER,
+} from "@/lib/content/site-content";
 
-type FieldName = "name" | "businessName" | "email" | "phone" | "goal" | "message";
+type FieldName =
+  | "name"
+  | "businessName"
+  | "email"
+  | "phone"
+  | "goal"
+  | "message";
 
 type FormValues = Record<FieldName, string>;
 
@@ -26,10 +35,17 @@ function validate(values: FormValues): FormErrors {
   if (!values.businessName.trim()) {
     errors.businessName = "Please add your business name.";
   }
-  if (!values.email.trim()) {
-    errors.email = "Please add your email address.";
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
+  const hasEmail = Boolean(values.email.trim());
+  const hasPhone = Boolean(values.phone.trim());
+
+  if (hasEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
     errors.email = "Please enter a valid email address.";
+  }
+  if (hasPhone && !normalizePhoneToE164(values.phone)) {
+    errors.phone = "Please use a valid phone number (e.g. +13065505040).";
+  }
+  if (!hasEmail && !hasPhone) {
+    errors.phone = "Please provide an email or phone number.";
   }
   if (!values.goal.trim()) errors.goal = "Please choose your primary goal.";
   if (!values.message.trim()) {
@@ -47,7 +63,10 @@ export function ContactForm() {
   const [statusMessage, setStatusMessage] = useState("");
 
   const fieldRefs = useRef<
-    Record<FieldName, HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null>
+    Record<
+      FieldName,
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null
+    >
   >({
     name: null,
     businessName: null,
@@ -59,7 +78,7 @@ export function ContactForm() {
 
   const fieldOrder = useMemo<FieldName[]>(
     () => ["name", "businessName", "email", "phone", "goal", "message"],
-    []
+    [],
   );
 
   function setField(name: FieldName, value: string) {
@@ -87,37 +106,67 @@ export function ContactForm() {
       if (IS_FORMSPREE_PLACEHOLDER) {
         setStatus("success");
         setStatusMessage(
-          "Thanks. Your request is ready to send once your Formspree endpoint is connected."
+          "Thanks. Your request is ready to send once your Formspree endpoint is connected.",
         );
         setValues(INITIAL_VALUES);
         return;
       }
 
-      const response = await fetch(CONTACT_CONFIG.formspreeEndpoint, {
+      const payload = {
+        name: values.name.trim(),
+        email: values.email.trim().toLowerCase() || undefined,
+        phone: normalizePhoneToE164(values.phone) ?? undefined,
+        message: buildAgentMessage(values),
+        businessName: values.businessName.trim(),
+        goal: values.goal,
+        projectDetails: values.message.trim(),
+        form_id: CONTACT_CONFIG.formspreeFormId || undefined,
+        _form_id: CONTACT_CONFIG.formspreeFormId || undefined,
+        _subject: `Strategy call request from ${values.name}`,
+      };
+
+      const submitUrl = CONTACT_CONFIG.speedToLeadWebhook
+        ? CONTACT_CONFIG.speedToLeadWebhook
+        : CONTACT_CONFIG.formspreeEndpoint;
+
+      const response = await fetch(submitUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify({
-          ...values,
-          _subject: `Strategy call request from ${values.name}`,
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        throw new Error("submit_failed");
+        let backendMessage: string | null = null;
+        try {
+          const data = (await response.json()) as { message?: string };
+          if (typeof data?.message === "string") backendMessage = data.message;
+        } catch {
+          // ignore parse error
+        }
+        setStatus("error");
+        setStatusMessage(
+          backendMessage ??
+            (CONTACT_CONFIG.speedToLeadWebhook
+              ? "The follow-up service returned an error. Make sure the speed-to-lead app is running (e.g. port 3000) and FORMSPREE_FORM_ID matches."
+              : "Your form did not send. Email hello@prairiebusinessai.ca and include your project goal."),
+        );
+        return;
       }
 
       setStatus("success");
       setStatusMessage(
-        "Thanks. Your request has been sent. Book your strategy call or check your email for next steps."
+        "Thanks. Your request has been sent. You should receive an SMS follow-up shortly.",
       );
       setValues(INITIAL_VALUES);
     } catch {
       setStatus("error");
       setStatusMessage(
-        "Your form did not send. Email hello@prairiebusinessai.ca and include your project goal."
+        CONTACT_CONFIG.speedToLeadWebhook
+          ? "Couldn't reach the follow-up service. Is the speed-to-lead app running on port 3000?"
+          : "Your form did not send. Email hello@prairiebusinessai.ca and include your project goal.",
       );
     } finally {
       setIsSubmitting(false);
@@ -125,7 +174,11 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate className="surface-card space-y-5 p-6 sm:p-7">
+    <form
+      onSubmit={onSubmit}
+      noValidate
+      className="surface-card space-y-5 p-6 sm:p-7"
+    >
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className="mb-2 block text-sm font-medium">
@@ -154,7 +207,10 @@ export function ContactForm() {
         </div>
 
         <div>
-          <label htmlFor="businessName" className="mb-2 block text-sm font-medium">
+          <label
+            htmlFor="businessName"
+            className="mb-2 block text-sm font-medium"
+          >
             Business Name
           </label>
           <input
@@ -170,7 +226,9 @@ export function ContactForm() {
             className="form-input focus-ring"
             placeholder="Your business name…"
             aria-invalid={Boolean(errors.businessName)}
-            aria-describedby={errors.businessName ? "business-error" : undefined}
+            aria-describedby={
+              errors.businessName ? "business-error" : undefined
+            }
           />
           {errors.businessName ? (
             <p id="business-error" className="form-error" role="alert">
@@ -183,7 +241,7 @@ export function ContactForm() {
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="email" className="mb-2 block text-sm font-medium">
-            Email
+            Email (Optional)
           </label>
           <input
             id="email"
@@ -224,8 +282,15 @@ export function ContactForm() {
               fieldRefs.current.phone = node;
             }}
             className="form-input focus-ring"
-            placeholder="(306) 000-0000…"
+            placeholder="+1 (306) 000-0000…"
+            aria-invalid={Boolean(errors.phone)}
+            aria-describedby={errors.phone ? "phone-error" : undefined}
           />
+          {errors.phone ? (
+            <p id="phone-error" className="form-error" role="alert">
+              {errors.phone}
+            </p>
+          ) : null}
         </div>
       </div>
 
@@ -282,7 +347,11 @@ export function ContactForm() {
         ) : null}
       </div>
 
-      <button type="submit" className="cta-primary focus-ring" disabled={isSubmitting}>
+      <button
+        type="submit"
+        className="cta-primary focus-ring"
+        disabled={isSubmitting}
+      >
         {isSubmitting ? "Sending…" : "Send Project Details"}
       </button>
 
@@ -299,3 +368,43 @@ export function ContactForm() {
     </form>
   );
 }
+
+function normalizePhoneToE164(value: string): string | null {
+  const digitsOnly = value.replace(/[^\d+]/g, "");
+  if (!digitsOnly) {
+    return null;
+  }
+
+  if (digitsOnly.startsWith("+")) {
+    const justDigits = digitsOnly.slice(1).replace(/\D/g, "");
+    return justDigits.length >= 10 && justDigits.length <= 15
+      ? `+${justDigits}`
+      : null;
+  }
+
+  const numeric = digitsOnly.replace(/\D/g, "");
+  if (numeric.length === 10) {
+    return `+1${numeric}`;
+  }
+  if (numeric.length === 11 && numeric.startsWith("1")) {
+    return `+${numeric}`;
+  }
+  return null;
+}
+
+function buildAgentMessage(values: FormValues): string {
+  const goalLabel = GOAL_LABELS[values.goal] ?? values.goal;
+  return [
+    `Business Name: ${values.businessName.trim()}`,
+    `Primary Goal: ${goalLabel}`,
+    "Project Details:",
+    values.message.trim(),
+  ].join("\n");
+}
+
+const GOAL_LABELS: Record<string, string> = {
+  assistant_setup: "AI Assistant Setup",
+  automations: "Custom AI Automations",
+  coaching: "AI Coaching & 1:1 Support",
+  other: "Not Sure Yet",
+};

@@ -8,10 +8,17 @@ describe("ContactForm", () => {
     const user = userEvent.setup();
     render(<ContactForm />);
 
-    await user.click(screen.getByRole("button", { name: "Send Project Details" }));
+    await user.click(
+      screen.getByRole("button", { name: "Send Project Details" }),
+    );
 
     expect(screen.getByText("Please add your name.")).toBeInTheDocument();
-    expect(screen.getByText("Please add your business name.")).toBeInTheDocument();
+    expect(
+      screen.getByText("Please add your business name."),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Please provide an email or phone number."),
+    ).toBeInTheDocument();
     expect(screen.getByLabelText("Name")).toHaveFocus();
   });
 
@@ -21,17 +28,50 @@ describe("ContactForm", () => {
 
     await user.type(screen.getByLabelText("Name"), "Josh");
     await user.type(screen.getByLabelText("Business Name"), "Prarie AI");
-    await user.type(screen.getByLabelText("Email"), "hello@example.com");
-    await user.selectOptions(screen.getByLabelText("Primary Goal"), "assistant_setup");
+    await user.type(
+      screen.getByLabelText("Email (Optional)"),
+      "hello@example.com",
+    );
+    await user.selectOptions(
+      screen.getByLabelText("Primary Goal"),
+      "assistant_setup",
+    );
     await user.type(
       screen.getByLabelText("Project Details"),
-      "I need a first-pass automation for lead response."
+      "I need a first-pass automation for lead response.",
     );
 
-    await user.click(screen.getByRole("button", { name: "Send Project Details" }));
+    await user.click(
+      screen.getByRole("button", { name: "Send Project Details" }),
+    );
 
     expect(
-      await screen.findByText(/Your request is ready to send|has been sent/i)
+      await screen.findByText(/Your request is ready to send|has been sent/i),
+    ).toBeInTheDocument();
+  });
+
+  test("accepts phone-only contact when email is empty", async () => {
+    const user = userEvent.setup();
+    render(<ContactForm />);
+
+    await user.type(screen.getByLabelText("Name"), "Josh");
+    await user.type(screen.getByLabelText("Business Name"), "Prarie AI");
+    await user.type(screen.getByLabelText("Phone (Optional)"), "+13065505040");
+    await user.selectOptions(
+      screen.getByLabelText("Primary Goal"),
+      "assistant_setup",
+    );
+    await user.type(
+      screen.getByLabelText("Project Details"),
+      "I need a first-pass automation for lead response.",
+    );
+
+    await user.click(
+      screen.getByRole("button", { name: "Send Project Details" }),
+    );
+
+    expect(
+      await screen.findByText(/Your request is ready to send|has been sent/i),
     ).toBeInTheDocument();
   });
 });

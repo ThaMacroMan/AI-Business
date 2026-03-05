@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "skills": {
+    "check-compiler-errors": {
+      "source": "cursor/plugins",
+      "sourceType": "github",
+      "computedHash": "74ccecb5589d6802133748fc00a6475c00a6b9e1a5cbdb9639d65150ecd709d2"
+    },
+    "deslop": {
+      "source": "cursor/plugins",
+      "sourceType": "github",
+      "computedHash": "8883a7d459c07a0b2ee06972e79baa634009aa3bab969a6650acbefac394ad41"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "computedHash": "063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67"
+    },
+    "review-and-ship": {
+      "source": "cursor/plugins",
+      "sourceType": "github",
+      "computedHash": "11678af30c380d242fe0637022e356eaf8423b8a5497bfc78ee5713b2c27912c"
+    },
+    "spec-driven-development": {
+      "source": "jasonkneen/kiro",
+      "sourceType": "github",
+      "computedHash": "3d35d416e1556d2df6d7c28338a0a2783e54ed91a50eba27da9bc9f26685920e"
+    },
+    "tdd": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "computedHash": "ad055544599481182d0079c4198e85da26677cb408a677be2da04915375f0427"
+    },
+    "vercel-react-best-practices": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "4365be772fd3b41994a72ad478472c6d680678e7f3859860ab010e9c46e48ee0"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "a6a44d5498f7e8f68289902f3dedfc6f38ae0cee1e96527c80724cf27f727c2a"
+    }
+  }
+}

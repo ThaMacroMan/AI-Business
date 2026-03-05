@@ -9,7 +9,7 @@ import {
 describe("site-content", () => {
   test("includes three services with non-empty deliverables", () => {
     expect(SERVICES).toHaveLength(3);
-
+ 
     for (const service of SERVICES) {
       expect(service.title.trim().length).toBeGreaterThan(0);
       expect(service.deliverables.length).toBeGreaterThanOrEqual(3);
