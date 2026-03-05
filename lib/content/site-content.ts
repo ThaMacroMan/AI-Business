@@ -23,12 +23,6 @@ export type ServiceItem = {
   secondaryImageAlt?: string;
 };
 
-export type ProcessStep = {
-  id: string;
-  title: string;
-  description: string;
-};
-
 export type PortfolioItem = {
   slug: string;
   title: string;
@@ -146,33 +140,6 @@ export const SERVICES: ServiceItem[] = [
     imageAlt: "OpenAI icon",
     secondaryImageSrc: "/images/product-offering-burst.svg",
     secondaryImageAlt: "Coaching icon accent",
-  },
-];
-
-export const PROCESS_STEPS: ProcessStep[] = [
-  {
-    id: "discover",
-    title: "Discovery & Priority Mapping",
-    description:
-      "We identify where time is being lost and rank opportunities by ROI and implementation speed.",
-  },
-  {
-    id: "design",
-    title: "Solution Design",
-    description:
-      "A practical AI plan is created around your workflows, staff capacity, and business goals.",
-  },
-  {
-    id: "implement",
-    title: "Build & Launch",
-    description:
-      "Assistants and automations are implemented with clear guardrails, documentation, and team alignment.",
-  },
-  {
-    id: "enable",
-    title: "Enablement & Iteration",
-    description:
-      "Your team gets coaching and a repeatable process to continue improving after launch.",
   },
 ];
 

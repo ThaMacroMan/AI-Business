@@ -12,7 +12,11 @@ export function ClickToCallButton({ phoneNumber }: ClickToCallButtonProps) {
 
   if (isRevealed) {
     return (
-      <a href={phoneHref} className="cta-secondary focus-ring w-full sm:w-auto" aria-label={`Call ${phoneNumber}`}>
+      <a
+        href={phoneHref}
+        className="cta-secondary focus-ring"
+        aria-label={`Call ${phoneNumber}`}
+      >
         {phoneNumber}
       </a>
     );
@@ -21,7 +25,7 @@ export function ClickToCallButton({ phoneNumber }: ClickToCallButtonProps) {
   return (
     <button
       type="button"
-      className="cta-secondary focus-ring w-full sm:w-auto"
+      className="cta-secondary focus-ring"
       onClick={() => setIsRevealed(true)}
     >
       Click to Call

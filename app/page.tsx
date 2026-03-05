@@ -1,6 +1,5 @@
 import { ContactSection } from "@/components/site/ContactSection";
 import { HeroSection } from "@/components/site/HeroSection";
-import { ProcessSection } from "@/components/site/ProcessSection";
 import { ServicesSection } from "@/components/site/ServicesSection";
 import { CONTACT_CONFIG, SITE_CONFIG } from "@/lib/content/site-content";
 
@@ -35,12 +34,13 @@ export default function Home() {
       <main id="main-content">
         <HeroSection />
         <ServicesSection />
-        <ProcessSection />
         <ContactSection />
       </main>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(localBusinessSchema),
+        }}
       />
     </>
   );

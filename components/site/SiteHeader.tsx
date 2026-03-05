@@ -1,10 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { SITE_CONFIG } from "@/lib/content/site-content";
 
 const NAV_ITEMS = [
   { href: "/#services", label: "Services" },
-  { href: "/#process", label: "Process" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/#contact", label: "Contact" },
 ];
@@ -12,29 +12,36 @@ const NAV_ITEMS = [
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-black/10 bg-[color:var(--surface-strong)]/90 backdrop-blur-sm">
-      <div className="section-shell flex min-h-20 flex-wrap items-center justify-between gap-3 py-3 md:gap-8">
-        <Link
-          href="/"
-          className="focus-ring shrink-0 text-base font-semibold tracking-wide sm:text-lg"
-        >
-          {SITE_CONFIG.brandName}
+      <div className="section-shell flex min-h-16 items-center justify-between gap-3 py-1.5 md:gap-8">
+        <Link href="/" className="focus-ring shrink-0">
+          <Image
+            src="/logosvg.png"
+            alt={SITE_CONFIG.brandName}
+            width={240}
+            height={56}
+            className="h-16 w-auto object-contain object-left"
+            priority
+          />
         </Link>
 
-        <nav aria-label="Mobile primary" className="md:hidden">
-          <div className="flex flex-wrap items-center justify-end gap-2">
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={`mobile-${item.href}`}
-                href={item.href}
-                className="focus-ring shrink-0 rounded-full border border-white/14 px-3 py-1.5 text-sm font-medium text-[color:var(--muted)] transition-colors hover:text-[color:var(--foreground)]"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
+        {/* Mobile nav — inline with logo, no CTA */}
+        <nav
+          aria-label="Mobile primary"
+          className="flex items-center gap-2 lg:hidden"
+        >
+          {NAV_ITEMS.map((item) => (
+            <Link
+              key={`mobile-${item.href}`}
+              href={item.href}
+              className="focus-ring shrink-0 rounded-full border border-white/14 px-3 py-1.5 text-sm font-medium text-[color:var(--muted)] transition-colors hover:text-[color:var(--foreground)]"
+            >
+              {item.label}
+            </Link>
+          ))}
         </nav>
 
-        <nav aria-label="Primary" className="hidden items-center gap-6 md:flex">
+        {/* Desktop nav */}
+        <nav aria-label="Primary" className="hidden items-center gap-6 lg:flex">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
@@ -46,7 +53,12 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <a href={SITE_CONFIG.primaryCtaHref} className="cta-primary focus-ring hidden text-sm md:inline-flex">
+        <a
+          href={SITE_CONFIG.primaryCtaHref}
+          className="cta-primary focus-ring hidden text-sm lg:inline-flex"
+          target="_blank"
+          rel="noreferrer"
+        >
           {SITE_CONFIG.primaryCtaLabel}
         </a>
       </div>

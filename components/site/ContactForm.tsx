@@ -7,13 +7,7 @@ import {
   IS_FORMSPREE_PLACEHOLDER,
 } from "@/lib/content/site-content";
 
-type FieldName =
-  | "name"
-  | "businessName"
-  | "email"
-  | "phone"
-  | "goal"
-  | "message";
+type FieldName = "name" | "businessName" | "phone" | "goal" | "message";
 
 type FormValues = Record<FieldName, string>;
 
@@ -22,7 +16,6 @@ type FormErrors = Partial<Record<FieldName, string>>;
 const INITIAL_VALUES: FormValues = {
   name: "",
   businessName: "",
-  email: "",
   phone: "",
   goal: "",
   message: "",
@@ -35,17 +28,10 @@ function validate(values: FormValues): FormErrors {
   if (!values.businessName.trim()) {
     errors.businessName = "Please add your business name.";
   }
-  const hasEmail = Boolean(values.email.trim());
-  const hasPhone = Boolean(values.phone.trim());
-
-  if (hasEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
-    errors.email = "Please enter a valid email address.";
-  }
-  if (hasPhone && !normalizePhoneToE164(values.phone)) {
+  if (!values.phone.trim()) {
+    errors.phone = "Please add your phone number.";
+  } else if (!normalizePhoneToE164(values.phone)) {
     errors.phone = "Please use a valid phone number (e.g. +13065505040).";
-  }
-  if (!hasEmail && !hasPhone) {
-    errors.phone = "Please provide an email or phone number.";
   }
   if (!values.goal.trim()) errors.goal = "Please choose your primary goal.";
   if (!values.message.trim()) {
@@ -70,14 +56,13 @@ export function ContactForm() {
   >({
     name: null,
     businessName: null,
-    email: null,
     phone: null,
     goal: null,
     message: null,
   });
 
   const fieldOrder = useMemo<FieldName[]>(
-    () => ["name", "businessName", "email", "phone", "goal", "message"],
+    () => ["name", "businessName", "phone", "goal", "message"],
     [],
   );
 
@@ -114,7 +99,6 @@ export function ContactForm() {
 
       const payload = {
         name: values.name.trim(),
-        email: values.email.trim().toLowerCase() || undefined,
         phone: normalizePhoneToE164(values.phone) ?? undefined,
         message: buildAgentMessage(values),
         businessName: values.businessName.trim(),
@@ -179,6 +163,13 @@ export function ContactForm() {
       noValidate
       className="surface-card space-y-5 p-6 sm:p-7"
     >
+      <div className="border-b border-white/10 pb-4">
+        <h3 className="font-display text-xl font-semibold">Send an Inquiry</h3>
+        <p className="mt-1 text-sm text-[color:var(--muted)]">
+          Fill this out and my AI agent will follow up with you shortly.
+        </p>
+      </div>
+
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className="mb-2 block text-sm font-medium">
@@ -238,60 +229,31 @@ export function ContactForm() {
         </div>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div>
-          <label htmlFor="email" className="mb-2 block text-sm font-medium">
-            Email (Optional)
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            spellCheck={false}
-            value={values.email}
-            onChange={(event) => setField("email", event.target.value)}
-            ref={(node) => {
-              fieldRefs.current.email = node;
-            }}
-            className="form-input focus-ring"
-            placeholder="name@business.com…"
-            aria-invalid={Boolean(errors.email)}
-            aria-describedby={errors.email ? "email-error" : undefined}
-          />
-          {errors.email ? (
-            <p id="email-error" className="form-error" role="alert">
-              {errors.email}
-            </p>
-          ) : null}
-        </div>
-
-        <div>
-          <label htmlFor="phone" className="mb-2 block text-sm font-medium">
-            Phone (Optional)
-          </label>
-          <input
-            id="phone"
-            name="phone"
-            type="tel"
-            autoComplete="tel"
-            inputMode="tel"
-            value={values.phone}
-            onChange={(event) => setField("phone", event.target.value)}
-            ref={(node) => {
-              fieldRefs.current.phone = node;
-            }}
-            className="form-input focus-ring"
-            placeholder="+1 (306) 000-0000…"
-            aria-invalid={Boolean(errors.phone)}
-            aria-describedby={errors.phone ? "phone-error" : undefined}
-          />
-          {errors.phone ? (
-            <p id="phone-error" className="form-error" role="alert">
-              {errors.phone}
-            </p>
-          ) : null}
-        </div>
+      <div>
+        <label htmlFor="phone" className="mb-2 block text-sm font-medium">
+          Phone
+        </label>
+        <input
+          id="phone"
+          name="phone"
+          type="tel"
+          autoComplete="tel"
+          inputMode="tel"
+          value={values.phone}
+          onChange={(event) => setField("phone", event.target.value)}
+          ref={(node) => {
+            fieldRefs.current.phone = node;
+          }}
+          className="form-input focus-ring"
+          placeholder="+1 (306) 000-0000…"
+          aria-invalid={Boolean(errors.phone)}
+          aria-describedby={errors.phone ? "phone-error" : undefined}
+        />
+        {errors.phone ? (
+          <p id="phone-error" className="form-error" role="alert">
+            {errors.phone}
+          </p>
+        ) : null}
       </div>
 
       <div>
